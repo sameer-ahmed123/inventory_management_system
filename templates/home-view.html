@@ -1,15 +1,33 @@
 {% extends "base.html" %}
 
+{% load static %}
+
+
+
 {% block content %}
+<link rel="stylesheet" href="{% static 'home.css' %}">
+{% if user.is_authenticated %}
+<a href="/logout">Logout</a>
+{% else %}
+<a href="/login">Login</a>
+{% endif %}
 <h1>{{ object.title }} (id: {{ id }})!</h1>
 <p>{{ content }}!</p>
 
-<ul>
+
+<div class="home-list">
+    <ul class="home-list-ul">
     {% for context in context %}
         {% if context.title %}
-            <li><a href='/articles/{{ context.id }}/'>{{ context.title }} - {{ context.content }}</a></li>
+            <li><a class="home-list-a" href='{{context.get_absolute_url}}'>{{ context.title }}----//////{{context.slug}}////// ------ {{ context.content }}</a></li>
         {% endif %}
     {% endfor %}
 </ul>
+
+
+<a class="make-article" href="{% url 'article-create' %}">make article</a>
+
+    <a ></a>
+</div>
 
 {% endblock content %}

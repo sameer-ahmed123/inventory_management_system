@@ -21,7 +21,9 @@ print("BASE_DIR", BASE_DIR)
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-0+dmu6*lky0l743o^=)8-^27tn0)dzoi)6-lzb1i)egsso_84h')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+
+#ci/cd == continus intigration and continus deployment
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = str(os.environ.get('DEBUG')) == "1" # 1 == True
@@ -35,6 +37,7 @@ if not DEBUG:
 # python manage.py migrate
 
 INSTALLED_APPS = [
+    #remove to aganin revert to original djnago admin   //'jazzmin'
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -42,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'articles',
+    'recipes'
 ]
 
 MIDDLEWARE = [
@@ -61,7 +65,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            BASE_DIR / "templates",          
+            BASE_DIR / "templates",
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -113,7 +117,29 @@ if POSTGRES_READY:
             "PORT": POSTGRES_PORT,
         }
     }
+# the settings for custom django admin
+JAZZMIN_SETTINGS = {
 
+"site_header": "Library",
+    "topmenu_links": [
+
+        # Url that gets reversed (Permissions can be added)
+        {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
+
+        # external url that opens in a new window (Permissions can be added)
+        {"name": "Support", "url": "https://github.com/farridav/django-jazzmin/issues", "new_window": True},
+
+        # model admin to link to (Permissions checked against model)
+        {"model": "auth.User"},
+
+        # App with dropdown menu to all its models pages (Permissions checked against models)
+        {"app": "books"},
+    ],
+    "show_sidebar": True,
+}
+JAZZMIN_UI_TWEAKS = {
+    "theme": "darkly",
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
